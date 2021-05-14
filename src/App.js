@@ -1,8 +1,8 @@
 import './App.css';
-import logo from './logo.svg';
+import Input from './Input';
 
 function App() {
-  return null;
+  return <Input />;
 }
 
 export default App;
