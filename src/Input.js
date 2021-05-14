@@ -5,6 +5,7 @@ export default function Input() {
   const [bottom, setBottom] = useState('');
   const [select, setSelect] = useState('');
   const [url, setUrl] = useState('');
+  const [data, setData] = useState([]);
 
   const handleTopChange = (event) => setTop(event.currentTarget.value);
   const handleBottomChange = (event) => setBottom(event.currentTarget.value);
@@ -12,6 +13,16 @@ export default function Input() {
 
   const handleMemeClick = () => {
     setUrl(`https://api.memegen.link/images/${select}/${top}/${bottom}.png`);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    await fetch('https://api.memegen.link/templates')
+      .then((response) => response.json())
+      .then((receivedData) => setData(receivedData));
   };
 
   return (
@@ -34,9 +45,9 @@ export default function Input() {
       />
       <label htmlFor="meme">Choose your meme</label>
       <select value={select} id="meme" onChange={handleSelectChange}>
-        <option>aag</option>
-        <option>ackbar</option>
-        <option>afraid</option>
+        {data.map((objects, key) => (
+          <option key={key}>{objects.name}</option>
+        ))}
       </select>
       <button type="button" onClick={handleMemeClick}>
         Display meme
