@@ -7,23 +7,30 @@ export default function Input() {
   const [url, setUrl] = useState('');
   const [data, setData] = useState([]);
 
+  // Getting the values from the input boxes
   const handleTopChange = (event) => setTop(event.currentTarget.value);
   const handleBottomChange = (event) => setBottom(event.currentTarget.value);
   const handleSelectChange = (event) => setSelect(event.currentTarget.value);
 
+  // Eventhandler for previewing the meme
   const handleMemeClick = () => {
     setUrl(`https://api.memegen.link/images/${select}/${top}/${bottom}.png`);
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  // Fetching Template Array used for the dropdown menu
 
-  const loadData = async () => {
-    await fetch('https://api.memegen.link/templates')
-      .then((response) => response.json())
-      .then((receivedData) => setData(receivedData));
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.memegen.link/templates/');
+        const json = await response.json();
+        setData(json);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <form>
@@ -44,9 +51,12 @@ export default function Input() {
         value={bottom}
       />
       <label htmlFor="meme">Choose your meme</label>
+      {/* Mapping through array and creating the dropdown menu for choosing meme template */}
       <select value={select} id="meme" onChange={handleSelectChange}>
-        {data.map((objects, key) => (
-          <option key={key}>{objects.name}</option>
+        {data.map((objects) => (
+          <option value={objects.id} key={objects.id}>
+            {objects.name}
+          </option>
         ))}
       </select>
       <button type="button" onClick={handleMemeClick}>
