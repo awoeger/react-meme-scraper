@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 const img = css`
   border: 2px solid black;
   width: 35%;
+  margin-bottom: 10px;
 `;
 
 export default function Input() {
