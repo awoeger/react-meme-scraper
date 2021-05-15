@@ -32,6 +32,39 @@ export default function Input() {
     fetchData();
   }, []);
 
+  // Download functionality
+
+  function forceDownload(blob, filename) {
+    // Create an invisible anchor element
+    const anchor = document.createElement('a');
+    anchor.style.display = 'none';
+    anchor.href = window.URL.createObjectURL(blob);
+    anchor.setAttribute('download', filename);
+    document.body.appendChild(anchor);
+
+    // Trigger the download by simulating click
+    anchor.click();
+
+    // Clean up
+    window.URL.revokeObjectURL(anchor.href);
+    document.body.removeChild(anchor);
+  }
+
+  function downloadResource(URL, filename) {
+    // If no filename is set, use filename from URL
+    if (!filename) filename = URL.match(/\/([^/#?]+)[^/]*$/)[1];
+
+    fetch(URL, {
+      headers: new Headers({
+        Origin: window.location.origin,
+      }),
+      mode: 'cors',
+    })
+      .then((response) => response.blob())
+      .then((blob) => forceDownload(blob, filename))
+      .catch((e) => console.error(e));
+  }
+
   return (
     <form>
       <label htmlFor="topline">Enter top line</label>
@@ -62,7 +95,16 @@ export default function Input() {
       <button type="button" onClick={handleMemeClick}>
         Display meme
       </button>
-      <button type="button">Download</button>
+      <button
+        onClick={() => {
+          downloadResource(
+            `https://api.memegen.link/images/${select}/${top}/${bottom}.png`,
+          );
+        }}
+        type="button"
+      >
+        Download
+      </button>
       <img alt="Generated Meme" src={url} />
     </form>
   );
