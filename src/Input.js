@@ -4,7 +4,9 @@ export default function Input() {
   const [top, setTop] = useState('');
   const [bottom, setBottom] = useState('');
   const [select, setSelect] = useState('');
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(
+    'https://api.memegen.link/images/cryingfloor/Me trying to find/the missing }.png',
+  );
   const [data, setData] = useState([]);
 
   // Getting the values from the input boxes
