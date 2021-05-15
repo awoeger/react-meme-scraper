@@ -1,11 +1,18 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
+
+const img = css`
+  border: 2px solid black;
+  width: 35%;
+`;
 
 export default function Input() {
   const [top, setTop] = useState('');
   const [bottom, setBottom] = useState('');
   const [select, setSelect] = useState('');
   const [url, setUrl] = useState(
-    'https://api.memegen.link/images/cryingfloor/Me trying to find/the missing }.png',
+    'https://api.memegen.link/images/atis/And then they said/we are going to find the missing }.png',
   );
   const [data, setData] = useState([]);
 
@@ -69,45 +76,59 @@ export default function Input() {
 
   return (
     <form>
-      <label htmlFor="topline">Enter top line</label>
-      <input
-        type="text"
-        id="topline"
-        placeholder="You had"
-        onChange={handleTopChange}
-        value={top}
-      />
-      <label htmlFor="bottomline">Enter bottom line</label>
-      <input
-        type="text"
-        id="bottomline"
-        placeholder="one job"
-        onChange={handleBottomChange}
-        value={bottom}
-      />
+      <div className="input-parent-container">
+        <div className="input-child-container">
+          <label htmlFor="topline">Enter top line</label>
+          <input
+            type="text"
+            id="topline"
+            placeholder="And then they said"
+            onChange={handleTopChange}
+            value={top}
+          />
+        </div>
+        <div className="input-child-container">
+          <label htmlFor="bottomline">Enter bottom line</label>
+          <input
+            type="text"
+            id="bottomline"
+            placeholder="we are going to find ..."
+            onChange={handleBottomChange}
+            value={bottom}
+          />
+        </div>
+      </div>
       <label htmlFor="meme">Choose your meme</label>
       {/* Mapping through array and creating the dropdown menu for choosing meme template */}
       <select value={select} id="meme" onChange={handleSelectChange}>
+        <option>Please select</option>
         {data.map((objects) => (
           <option value={objects.id} key={objects.id}>
             {objects.name}
           </option>
         ))}
       </select>
-      <button type="button" onClick={handleMemeClick}>
-        Display meme
-      </button>
-      <button
-        onClick={() => {
-          downloadResource(
-            `https://api.memegen.link/images/${select}/${top}/${bottom}.png`,
-          );
-        }}
-        type="button"
-      >
-        Download
-      </button>
-      <img alt="Generated Meme" src={url} />
+      <div className="button-container">
+        <button className="pushable" type="button" onClick={handleMemeClick}>
+          <span className="shadow" />
+          <span className="edge" />
+          <span className="front">Display meme</span>
+        </button>
+        <button
+          className="pushable"
+          onClick={() => {
+            downloadResource(
+              `https://api.memegen.link/images/${select}/${top}/${bottom}.png`,
+            );
+          }}
+          type="button"
+        >
+          <span className="shadow" />
+          <span className="edge" />
+          <span className="front">Download</span>
+        </button>
+      </div>
+      <img css={img} alt="Generated Meme" src={url} />
     </form>
   );
 }
