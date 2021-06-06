@@ -116,7 +116,7 @@ export default function Input() {
           <span className="front">Display meme</span>
         </button>
         <button
-          className="pushable"
+          className={top === '' || bottom === '' ? 'nobutton' : 'pushable'}
           onClick={() => {
             downloadResource(
               `https://api.memegen.link/images/${select}/${top}/${bottom}.png`,
